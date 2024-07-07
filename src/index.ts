@@ -25,6 +25,26 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+app.get('/fakestore', async (req: Request, res: Response) => {
+  // make two api call concurrently
+  const products = fetch('https://fakestoreapi.com/products');
+  const users = fetch('https://fakestoreapi.com/users');
+  // make two api call and destructure the response
+  const [productsData, usersData] = await Promise.all([products, users]);
+  const product = await productsData.json();
+  console.log(product);
+
+  // res.status(200).json({
+  //   products: productsData.json(),
+  //   users: usersData.json(),
+  // });
+
+  // send the response
+  res.status(200).jsonp({
+    data: [],
+  });
+});
+
 /* Start the Express app and listen
  for incoming requests on the specified port */
 app.listen(port, () => {
