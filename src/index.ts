@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 
 import * as _ from 'lodash';
+import { connectToDB } from './helper';
 
 /*
  * Load up and parse configuration details from
@@ -18,6 +19,20 @@ dotenv.config();
  */
 const app: Express = express();
 const port = process.env.PORT || 3000;
+const MONGDB_URL = process.env.MONGO_URL || '';
+
+/**
+ * Place all middleware like express.json || auth || error handeler
+ *
+ */
+
+app.use(express.json());
+
+/**
+ * Cnnect to DB like mongo atlas or local
+ * mongodb+srv://<username>:<password>@<cluster||host_name>/
+ */
+connectToDB(MONGDB_URL);
 
 /* Define a route for the root path ("/")
  using the HTTP GET method */
